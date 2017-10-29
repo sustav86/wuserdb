@@ -2,18 +2,21 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css" />
 <title>Login page</title>
 </head>
 <body>
-	<h4>Log In</h4>
-	<span style="color: green" wicket:id="succes"> </span>
-	<span style="color: red" wicket:id="feedback"></span>
-	<form wicket:id="loginForm">
-		Name: <input wicket:id="name" type="text" size="20" /><br />
-		Password: <input wicket:id="password" type="password" size="20" /><br />
-		<input type="submit" value="Log In" />
-	</form>
-	<button wicket:id="singup" type="button" value="Sing Up">Sing
-		Up</button>
+	<div id="action_form">
+		<h4>Log In</h4>
+		<span style="color: green" wicket:id="succes"> </span> <span
+			style="color: red" wicket:id="feedback"></span>
+		<form wicket:id="loginForm">
+			Name: <input wicket:id="name" type="text" size="20" /><br />
+			Password: <input wicket:id="password" type="password" size="20" />
+			<p><input type="submit" value="Log In" /></p>
+		</form>
+		<button wicket:id="singup" type="button" value="Sing Up">Sing
+			Up</button>
+	</div>
 </body>
 </html>
