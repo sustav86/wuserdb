@@ -1,7 +1,5 @@
 package ua.sustavov;
 
-import java.util.Arrays;
-
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;

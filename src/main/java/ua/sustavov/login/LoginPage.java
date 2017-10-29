@@ -1,15 +1,15 @@
 package ua.sustavov.login;
 
+import java.util.Locale;
+
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidationError;
@@ -29,73 +29,94 @@ public class LoginPage extends WebPage {
 	@SpringBean
 	private UserService userService;
 
-	private Form<?> form;
+	private String name;
+	private String password;
 
-	public UserService getUserService() {
-		return userService;
+	@SuppressWarnings("LoginForm")
+	class LoginForm extends Form<Void> {
+
+		private static final long serialVersionUID = 4237597734918239015L;
+
+		public LoginForm(String id) {
+			super(id);
+		}
+
+		@Override
+		protected void onSubmit() {
+			String userName = getName();
+			String userPassword = getPassword();
+			if (authentication(userName, userPassword)) {
+				setResponsePage(UsersPage.class);
+			} else {
+				error((IValidationError) new ValidationError().addKey("userNotFound"));
+			}
+
+		}
+
 	}
 
 	public LoginPage(final PageParameters parameters) {
 		super(parameters);
 
-		add(new FeedbackPanel("succes", new ExactErrorLevelFilter(FeedbackMessage.SUCCESS)));
-		add(new FeedbackPanel("feedback", new ExactErrorLevelFilter(FeedbackMessage.ERROR)));
+		CurrentSession.get().setLocale(new Locale( "en", "EN" ));
+		
+		TextField<String> nameTextField = new TextField<String>("name", new PropertyModel<String>(this, "name"));
+		nameTextField.setRequired(true);
+		nameTextField.add(new NamePolicyValidator());
+		
+		PasswordTextField passwordTextField = new PasswordTextField("password",
+				new PropertyModel<String>(this, "password"));
 
-		FormComponent<String> name = new TextField<String>("name", Model.of(""));
-		name.setLabel(Model.of("Name"));
-		name.setRequired(true);
-		name.add(new NamePolicyValidator());
+		FeedbackPanel errorFeedBackPanel = new FeedbackPanel("feedback",
+				new ExactErrorLevelFilter(FeedbackMessage.ERROR));
+		FeedbackPanel succesFeedBackPanel = new FeedbackPanel("succes",
+				new ExactErrorLevelFilter(FeedbackMessage.SUCCESS));
 
-		FormComponent<?> password = new PasswordTextField("password", Model.of(""));
-		password.setLabel(Model.of("Password"));
-		password.setRequired(true);
+		Link<Void> singUpButton = new Link<Void>("singup") {
 
-		form = new Form("form") {
-
-			@Override
-			protected void onSubmit() {
-				super.onSubmit();
-
-			}
-
-			@Override
-			protected void onValidate() {
-				super.onValidate();
-
-			}
-
-		};
-
-		Button button = new Button("login") {
-
-			@Override
-			public void onSubmit() {
-				super.onSubmit();
-				User checkUser = getUserService().getByName(name.getValue());
-				if (checkUser == null || !password.getValue().equals(checkUser.getPassword())) {
-					error((IValidationError) new ValidationError().addKey("userNotFound"));
-				} else {
-					CurrentSession.get()
-							.setLoggedUser(new LoggedUser(checkUser.getId(), checkUser.getName(), checkUser.getRole()));
-					setResponsePage(UsersPage.class);
-				}
-			}
-
-		};
-
-		add(form);
-		form.add(name);
-		form.add(password);
-		form.add(button);
-
-		add(new Link<Void>("singup") {
+			private static final long serialVersionUID = 1384569312186511804L;
 
 			@Override
 			public void onClick() {
-				setResponsePage(RegisterPage.class);
+				PageParameters pageParameters = new PageParameters();
+				pageParameters.add("name", getName() == null ? "" : getName());
+				RegisterPage registerPage = new RegisterPage(pageParameters);
+				setResponsePage(registerPage);
 			}
 
-		});
+		};
+
+		Form<Void> loginForm = new LoginForm("loginForm");
+		loginForm.add(nameTextField);
+		loginForm.add(passwordTextField);
+		add(errorFeedBackPanel);
+		add(succesFeedBackPanel);
+		add(loginForm);
+		add(singUpButton);
+
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	@SuppressWarnings("unused")
+	private boolean authentication(final String name, final String password) {
+		User checkUser = userService.getByName(getName());
+		if (checkUser != null) {
+			setLogginUserSession(checkUser);
+			return true;
+		}
+
+		return false;
+	}
+
+	private void setLogginUserSession(final User checkUser) {
+		CurrentSession.get().setLoggedUser(new LoggedUser(checkUser.getId(), checkUser.getName(), checkUser.getRole()));
 	}
 
 }

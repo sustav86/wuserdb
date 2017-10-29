@@ -1,5 +1,7 @@
 package ua.sustavov;
 
+import java.util.Locale;
+
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
@@ -29,5 +31,12 @@ public final class CurrentSession extends WebSession {
 	public static CurrentSession get() {
 		return (CurrentSession) Session.get();
 	}
+
+	@Override
+	public Session setLocale(Locale locale) {
+		return super.setLocale(locale);
+	}
+	
+	
 
 }
