@@ -15,9 +15,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 
-import ua.sustavov.login.ExactErrorLevelFilter;
 import ua.sustavov.model.User;
 import ua.sustavov.model.UserRole;
+import ua.sustavov.view.validators.ExactErrorLevelFilter;
 import ua.sustavov.view.validators.NamePolicyValidator;
 
 public class EditPanel extends Panel {

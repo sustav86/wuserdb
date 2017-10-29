@@ -27,9 +27,9 @@ import org.apache.wicket.model.Model;
 
 import ua.sustavov.CurrentSession;
 import ua.sustavov.LoggedUser;
-import ua.sustavov.login.ExactErrorLevelFilter;
 import ua.sustavov.model.User;
 import ua.sustavov.service.UserService;
+import ua.sustavov.view.validators.ExactErrorLevelFilter;
 
 public class UsersPage extends WebPage {
 

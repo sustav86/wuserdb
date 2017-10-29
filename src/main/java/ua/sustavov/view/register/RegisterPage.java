@@ -1,4 +1,4 @@
-package ua.sustavov.login;
+package ua.sustavov.view.register;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +22,8 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import ua.sustavov.model.User;
 import ua.sustavov.model.UserRole;
 import ua.sustavov.service.UserService;
+import ua.sustavov.view.login.LoginPage;
+import ua.sustavov.view.validators.ExactErrorLevelFilter;
 import ua.sustavov.view.validators.NamePolicyValidator;
 import ua.sustavov.view.validators.PasswordPolicyValidator;
 

@@ -7,9 +7,9 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
-import ua.sustavov.login.LoginPage;
-import ua.sustavov.login.RegisterPage;
 import ua.sustavov.view.UsersPage;
+import ua.sustavov.view.login.LoginPage;
+import ua.sustavov.view.register.RegisterPage;
 
 /**
  * Application object for your web application. If you want to run this

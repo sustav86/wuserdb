@@ -1,4 +1,4 @@
-package ua.sustavov.login;
+package ua.sustavov.view.validators;
 
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;

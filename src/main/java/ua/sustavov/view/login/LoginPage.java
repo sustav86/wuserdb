@@ -1,4 +1,4 @@
-package ua.sustavov.login;
+package ua.sustavov.view.login;
 
 import java.util.Locale;
 
@@ -20,6 +20,8 @@ import ua.sustavov.LoggedUser;
 import ua.sustavov.model.User;
 import ua.sustavov.service.UserService;
 import ua.sustavov.view.UsersPage;
+import ua.sustavov.view.register.RegisterPage;
+import ua.sustavov.view.validators.ExactErrorLevelFilter;
 import ua.sustavov.view.validators.NamePolicyValidator;
 
 public class LoginPage extends WebPage {
