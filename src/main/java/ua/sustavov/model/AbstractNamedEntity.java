@@ -8,7 +8,6 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity implements 
 
 	private static final long serialVersionUID = -5298960226564700525L;
 
-	@NonNull
 	protected String name;
 
 	public AbstractNamedEntity() {

@@ -1,18 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
 <wicket:panel>
-
-	<h4>Edit</h4>
+	<!-- <h4>Edit</h4> -->
 	<span style="color: green" wicket:id="succes"> </span>
 	<span style="color: red" wicket:id="feedback"></span>
+	<span wicket:id="listview">
 	<form wicket:id="panelForm">
 		Id: <input wicket:id="id" type="text" size="20" /><br /> Name: <input
 			wicket:id="name" type="text" size="20" /><br /> Surname: <input
 			wicket:id="surname" type="text" size="20" /><br /> Password: <input
-			wicket:id="password" type="password" size="20" /><br /> Password: <input
+			wicket:id="password" type="password" size="20" /><br /> Confirm Password: <input
 			wicket:id="password2" type="password" size="20" /><br /> Email: <input
 			wicket:id="email" type="text" size="20" /><br /> Role: <select
 			wicket:id="role">
 			<option></option>
-		</select><br /> <input type="submit" value="Save" />
+		</select><br /> <input type="submit" value="Save" /> <button wicket:id="cancelbutton" type="button" value="Cancel">Cancel</button> 
 	</form>
-
+	</span>
+	
 </wicket:panel>
+</body>
+</html>

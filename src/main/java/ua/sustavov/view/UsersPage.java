@@ -41,17 +41,14 @@ public class UsersPage extends WebPage {
 	private List<User> users = userService.getAll();
 	private LoggedUser loggedUser = CurrentSession.get().getLoggedUser();
 	private IModel<User> currentModel;
-
+	private EditPanel editPanel;
+	
 	private void setCurrentModel(IModel<User> currentModel) {
 		this.currentModel = currentModel;
 	}
 
 	private IModel<User> getCurrentModel() {
 		return currentModel;
-	}
-
-	public UserService getUserService() {
-		return userService;
 	}
 
 	public void updateUsers() {
@@ -69,14 +66,12 @@ public class UsersPage extends WebPage {
 
 	@Override
 	protected void onModelChanged() {
-		System.out.println("onModelChanged()");
-		System.out.println(getCurrentModel().getObject());
-		super.onModelChanged();
 		if (getCurrentModel().getObject() != null) {
 			User changedUser = getCurrentModel().getObject();
 			User seachingChangedUser = userService.get(changedUser.getId());
 			if (seachingChangedUser != null) {
 				userService.update(changedUser);
+				editPanel.deleteForm(changedUser);
 				success("User update successfully");
 			} else {
 				error("User not found!");
@@ -84,25 +79,10 @@ public class UsersPage extends WebPage {
 		}
 	}
 
-	public void clearePanel(IModel<User> rowModel) {
-		if (rowModel.getObject() != null) {
-			User cleanUser = rowModel.getObject();
-			cleanUser.setId(0);
-			cleanUser.setName("");
-			cleanUser.setEmail("");
-			cleanUser.setPassword("");
-			cleanUser.setSurname("");
-			cleanUser.setRole(null);
-		}
-
-	}
-
 	public UsersPage(final PageParameters parameters) {
 
-		add(new FeedbackPanel("succes", new ExactErrorLevelFilter(FeedbackMessage.SUCCESS)));
-		add(new FeedbackPanel("feedback", new ExactErrorLevelFilter(FeedbackMessage.ERROR)));
+		editPanel = new EditPanel("panel", new Model<User>(new User()));
 
-		EditPanel editPanel = new EditPanel("panel", new Model<User>(new User()));
 		List<IColumn<User, String>> columns = new ArrayList<>();
 		DefaultDataTable<User, String> defaultDataTable = new DefaultDataTable<User, String>("users", columns,
 				new ContactsProvider(), 10);
@@ -125,8 +105,7 @@ public class UsersPage extends WebPage {
 						if (getAccess(rowModel)) {
 							System.out.println("We here on save");
 							setCurrentModel(rowModel);
-							EditPanel newPanel = new EditPanel("panel", rowModel);
-							editPanel.replaceWith(newPanel);
+							editPanel.add(new Model<User>(rowModel.getObject()));
 						} else {
 							error("Accsess denied!");
 						}
@@ -152,9 +131,9 @@ public class UsersPage extends WebPage {
 					@Override
 					public void onClick() {
 						if (getAccess(rowModel)) {
-							getUserService().delete(rowModel.getObject().getId());
+							userService.delete(rowModel.getObject().getId());
 							updateUsers();
-							clearePanel(rowModel);
+							editPanel.deleteForm(rowModel.getObject());
 							defaultDataTable.render();
 						}
 
@@ -171,9 +150,16 @@ public class UsersPage extends WebPage {
 			}
 
 		});
+		
 
+		FeedbackPanel errorFeedBackPanel = new FeedbackPanel("feedback",
+				new ExactErrorLevelFilter(FeedbackMessage.ERROR));
+		FeedbackPanel succesFeedBackPanel = new FeedbackPanel("succes",
+				new ExactErrorLevelFilter(FeedbackMessage.SUCCESS));
+
+		add(errorFeedBackPanel);
+		add(succesFeedBackPanel);
 		add(defaultDataTable);
-
 		add(editPanel);
 
 	}

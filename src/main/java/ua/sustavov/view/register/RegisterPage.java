@@ -15,6 +15,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
@@ -38,6 +39,12 @@ public class RegisterPage extends WebPage {
 		super(parameters);
 
 		User user = new User();
+
+		StringValue nameParameter = parameters.get("name");
+		if (!nameParameter.isNull()) {
+			user.setName(nameParameter.toString());
+		}
+
 		List<UserRole> list = Arrays.asList(UserRole.values());
 
 		Form<User> registerForm = new RegisterForm("registerForm", new CompoundPropertyModel<User>(user));
@@ -93,7 +100,11 @@ public class RegisterPage extends WebPage {
 			if (findRegisteredUser(registrationUser)) {
 				userService.create(registrationUser);
 				success("Congratulation! You are register, please, Log In");
-				setResponsePage(LoginPage.class);
+
+				PageParameters pageParameters = new PageParameters();
+				pageParameters.add("name", registrationUser.getName());
+				LoginPage loginPage = new LoginPage(pageParameters);
+				setResponsePage(loginPage);
 			}
 
 		}
