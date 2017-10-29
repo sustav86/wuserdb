@@ -1,18 +1,18 @@
 <wicket:panel>
 
 	<h4>Edit</h4>
-	<div style="color: green" wicket:id="succes"> </div>
-	<div style="color: red" wicket:id="feedback"></div>
-	<form wicket:id="form">
+	<span style="color: green" wicket:id="succes"> </span>
+	<span style="color: red" wicket:id="feedback"></span>
+	<form wicket:id="panelForm">
 		Id: <input wicket:id="id" type="text" size="20" /><br /> Name: <input
 			wicket:id="name" type="text" size="20" /><br /> Surname: <input
 			wicket:id="surname" type="text" size="20" /><br /> Password: <input
-			wicket:id="password" type="text" size="20" /><br /> Password: <input
-			wicket:id="password2" type="text" size="20" /><br /> Email: <input
+			wicket:id="password" type="password" size="20" /><br /> Password: <input
+			wicket:id="password2" type="password" size="20" /><br /> Email: <input
 			wicket:id="email" type="text" size="20" /><br /> Role: <select
 			wicket:id="role">
 			<option></option>
-		</select><br /> <input type="submit" value="Save" wicket:id="save" />
+		</select><br /> <input type="submit" value="Save" />
 	</form>
 
 </wicket:panel>

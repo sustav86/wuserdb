@@ -4,15 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.feedback.FeedbackMessage;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 
 import ua.sustavov.model.User;
@@ -24,69 +24,64 @@ public class EditPanel extends Panel {
 
 	private static final long serialVersionUID = -4298873343828324226L;
 
+	class PanelForm extends Form<User> {
+
+		private static final long serialVersionUID = -2194025881289182529L;
+
+		public PanelForm(String id, IModel<User> model) {
+			super(id, model);
+		}
+
+		@Override
+		protected void onSubmit() {
+			User editUser = getModelObject();
+			System.out.println(editUser);
+		}
+
+	}
+
 	public EditPanel(String id, IModel<User> model) {
 		super(id, model);
 
-		modelChanged();
 		List<UserRole> list = Arrays.asList(UserRole.values());
 
-		add(new FeedbackPanel("succes", new ExactErrorLevelFilter(FeedbackMessage.SUCCESS)));
-		add(new FeedbackPanel("feedback", new ExactErrorLevelFilter(FeedbackMessage.ERROR)));
+		Form<User> panelForm = new PanelForm("panelForm", new CompoundPropertyModel<User>(model));
 
-		TextField<String> idd = new TextField<String>("id", new PropertyModel<String>(model, "id"));
-		idd.setEnabled(false);
+		TextField<String> uidTextField = new TextField<String>("id");
+		uidTextField.setEnabled(false);
 
-		TextField<String> name = new TextField<String>("name", new PropertyModel<String>(model, "name"));
-		name.setRequired(true);
-		name.add(new NamePolicyValidator());
+		TextField<String> nameTextField = new TextField<String>("name");
+		nameTextField.setRequired(true);
+		nameTextField.add(new NamePolicyValidator());
 
-		TextField<String> surname = new TextField<>("surname");
+		TextField<String> surnameTextField = new TextField<>("surname");
 
-		TextField<String> password = new TextField<String>("password", new PropertyModel<String>(model, "password"));
-		TextField<String> password2 = new TextField<String>("password2", new PropertyModel<String>(model, "password"));
+		PasswordTextField passwordTextField = new PasswordTextField("password");
 
-		TextField<String> email = new TextField<>("email");
-		email.setRequired(true);
-		email.add(EmailAddressValidator.getInstance());
+		PasswordTextField passwordTextFieldValid = new PasswordTextField("password2", Model.of(""));
 
-		DropDownChoice<UserRole> userRole = new DropDownChoice<UserRole>("role",
-				new PropertyModel<UserRole>(model, "role"), list);
-		userRole.setRequired(true);
+		TextField<String> emailTextField = new TextField<>("email");
+		emailTextField.setRequired(true);
+		emailTextField.add(EmailAddressValidator.getInstance());
 
-		Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(model)) {
+		DropDownChoice<UserRole> userRoleChoice = new DropDownChoice<UserRole>("role", list);
+		userRoleChoice.setRequired(true);
 
-			@Override
-			protected void onSubmit() {
-				super.onSubmit();
+		FeedbackPanel errorFeedBackPanel = new FeedbackPanel("feedback",
+				new ExactErrorLevelFilter(FeedbackMessage.ERROR));
+		FeedbackPanel succesFeedBackPanel = new FeedbackPanel("succes",
+				new ExactErrorLevelFilter(FeedbackMessage.SUCCESS));
 
-			}
-
-			@Override
-			protected void onValidate() {
-				super.onValidate();
-			}
-
-		};
-
-		Button button = new Button("save") {
-
-			@Override
-			public void onSubmit() {
-				super.onSubmit();
-				getPage().modelChanged();
-			}
-
-		};
-
-		add(form);
-		form.add(idd);
-		form.add(name);
-		form.add(surname);
-		form.add(password);
-		form.add(password2);
-		form.add(email);
-		form.add(userRole);
-		form.add(button);
+		panelForm.add(uidTextField);
+		panelForm.add(nameTextField);
+		panelForm.add(surnameTextField);
+		panelForm.add(emailTextField);
+		panelForm.add(passwordTextField);
+		panelForm.add(passwordTextFieldValid);
+		panelForm.add(userRoleChoice);
+		add(errorFeedBackPanel);
+		add(succesFeedBackPanel);
+		add(panelForm);
 
 	}
 
