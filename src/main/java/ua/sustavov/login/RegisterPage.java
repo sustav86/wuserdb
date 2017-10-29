@@ -2,6 +2,7 @@ package ua.sustavov.login;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.jar.Attributes.Name;
 
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.WebPage;
@@ -12,6 +13,8 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -33,80 +36,81 @@ public class RegisterPage extends WebPage {
 	@SpringBean
 	private UserService userService;
 
-	private Form<?> form;
-
-	public UserService getUserService() {
-		return userService;
-	}
-
 	public RegisterPage(final PageParameters parameters) {
 		super(parameters);
 
 		User user = new User();
 		List<UserRole> list = Arrays.asList(UserRole.values());
 
-		add(new FeedbackPanel("succes", new ExactErrorLevelFilter(FeedbackMessage.SUCCESS)));
-		add(new FeedbackPanel("feedback", new ExactErrorLevelFilter(FeedbackMessage.ERROR)));
+		Form<User> registerForm = new RegisterForm("registerForm", new CompoundPropertyModel<User>(user));
 
-		FormComponent<String> name = new TextField<>("name", new PropertyModel<String>(user, "name"));
-		name.setRequired(true);
-		name.add(new NamePolicyValidator());
+		TextField<String> nameTextField = new TextField<>("name");
+		nameTextField.setRequired(true);
+		nameTextField.add(new NamePolicyValidator());
 
-		FormComponent<String> surname = new TextField<>("surname", new PropertyModel<String>(user, "surname"));
+		TextField<String> surnameTextField = new TextField<>("surname");
 
-		FormComponent<String> email = new TextField<>("email", new PropertyModel<String>(user, "email"));
-		email.setRequired(true);
-		email.add(EmailAddressValidator.getInstance());
+		TextField<String> emailTextField = new TextField<>("email");
+		emailTextField.setRequired(true);
+		emailTextField.add(EmailAddressValidator.getInstance());
 
-		FormComponent<?> password = new PasswordTextField("password", new PropertyModel<String>(user, "password"));
+		PasswordTextField passwordTextField = new PasswordTextField("password");
 
-		FormComponent<?> password2 = new PasswordTextField("password2", Model.of(""));
+		PasswordTextField passwordTextFieldValid = new PasswordTextField("password2", Model.of(""));
 
-		DropDownChoice<UserRole> userRole = new DropDownChoice<UserRole>("role",
-				new PropertyModel<UserRole>(user, "role"), list);
-		userRole.setRequired(true);
+		DropDownChoice<UserRole> userRoleChoice = new DropDownChoice<UserRole>("role", list);
+		userRoleChoice.setRequired(true);
 
-		form = new Form("form") {
+		FeedbackPanel errorFeedBackPanel = new FeedbackPanel("feedback",
+				new ExactErrorLevelFilter(FeedbackMessage.ERROR));
+		FeedbackPanel succesFeedBackPanel = new FeedbackPanel("succes",
+				new ExactErrorLevelFilter(FeedbackMessage.SUCCESS));
 
-			@Override
-			protected void onSubmit() {
-				super.onSubmit();
+		registerForm.add(new PasswordPolicyValidator(passwordTextField, passwordTextFieldValid));
+		registerForm.add(nameTextField);
+		registerForm.add(surnameTextField);
+		registerForm.add(emailTextField);
+		registerForm.add(passwordTextField);
+		registerForm.add(passwordTextFieldValid);
+		registerForm.add(userRoleChoice);
+		add(errorFeedBackPanel);
+		add(succesFeedBackPanel);
+		add(registerForm);
+
+	}
+
+	@SuppressWarnings("RegisterForm")
+	class RegisterForm extends Form<User> {
+
+		private static final long serialVersionUID = 8014720086340012056L;
+
+		public RegisterForm(String id, IModel<User> model) {
+			super(id, model);
+
+		}
+
+		@Override
+		protected void onSubmit() {
+			User registrationUser = getModelObject();
+			if (findRegisteredUser(registrationUser)) {
+				userService.create(registrationUser);
+				success("Congratulation! You are register, please, Log In");
+				setResponsePage(LoginPage.class);
 			}
 
-			@Override
-			protected void onValidate() {
-				super.onValidate();
+		}
 
-			}
+	}
 
-		};
+	@SuppressWarnings("unused")
+	private boolean findRegisteredUser(final User registrationUser) {
+		User checkUser = userService.getByEmail(registrationUser.getEmail());
+		if (checkUser != null) {
+			error((IValidationError) new ValidationError().addKey("userFound"));
+			return false;
+		}
 
-		Button button = new Button("singup") {
-			@Override
-			public void onSubmit() {
-				super.onSubmit();
-				User checkUser = getUserService().getByName(user.getName());
-				if (checkUser != null && user.getEmail().equals(checkUser.getEmail())) {
-					name.error((IValidationError) new ValidationError().addKey("userFound"));
-				} else {
-					getUserService().create(user);
-					success("Congratulation! You are register, please, Log In");
-					setResponsePage(LoginPage.class);
-				}
-
-			}
-		};
-
-		form.add(new PasswordPolicyValidator(password, password2));
-
-		add(form);
-		form.add(name);
-		form.add(surname);
-		form.add(email);
-		form.add(password);
-		form.add(password2);
-		form.add(userRole);
-		form.add(button);
+		return true;
 	}
 
 }
