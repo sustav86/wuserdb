@@ -15,10 +15,3 @@ create table users
 );
 create unique index unique_email on users (email);
 
---CREATE TABLE user_roles
---(
---  user_id integer not null,
---  role    varchar,
---  constraint user_roles_idx unique (user_id, role),
---  foreign key (user_id) references users (id) on delete cascade
---);
