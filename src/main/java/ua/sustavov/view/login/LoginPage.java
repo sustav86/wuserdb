@@ -115,7 +115,7 @@ public class LoginPage extends WebPage {
 	@SuppressWarnings("unused")
 	private boolean authentication(final String name, final String password) {
 		User checkUser = userService.getByName(getName());
-		if (checkUser != null) {
+		if (checkUser != null && password.equals(checkUser.getPassword())) {
 			setLogginUserSession(checkUser);
 			return true;
 		}

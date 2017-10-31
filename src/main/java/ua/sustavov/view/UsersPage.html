@@ -2,31 +2,11 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css" />
 <title>All users db</title>
-<style type="text/css">
-table.users {
-	border-width: 0px;
-	border-color: gray;
-	border-collapse: collapse;
-}
-
-table.users th, table.users td {
-	border-width: 1px;
-	padding: 3px;
-	border-style: inset;
-	border-color: gray;
-}
-
-table.users th {
-	font-weight: bold;
-}
-
-a {
-	color: red;
-}
-</style>
 </head>
 <body>
+
 	<span style="color: green" wicket:id="succes"> </span>
 	<span style="color: red" wicket:id="feedback"></span>
 	<table wicket:id="users" class="users"></table>

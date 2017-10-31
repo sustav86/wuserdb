@@ -2,22 +2,27 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css" />
 <title>Registration page</title>
 </head>
 <body>
-	<h4>Registration</h4>
 	<span style="color: green" wicket:id="succes"> </span>
 	<span style="color: red" wicket:id="feedback"></span>
-	<form wicket:id="registerForm">
-		Name: <input wicket:id="name" type="text" size="20" /><br />
-		Surname: <input wicket:id="surname" type="text" size="20" /><br />
-		Email: <input wicket:id="email" type="text" size="20" /><br />
-		Password: <input wicket:id="password" type="password" size="20" /><br />
-		Confirm Password: <input wicket:id="password2" type="password"
-			size="20" /><br /> Role: <select wicket:id="role">
-			<option></option>
-		</select><br /> <input type="submit" value="Sing Up" />
-	</form>
-
+	<div id="registered_form">
+		<h4>Registration</h4>
+		<form wicket:id="registerForm">
+			Name: <input wicket:id="name" type="text" size="20" /><br />
+			Surname: <input wicket:id="surname" type="text" size="20" /><br />
+			Email: <input wicket:id="email" type="text" size="20" /><br />
+			Password: <input wicket:id="password" type="password" size="20" /><br />
+			Confirm Password: <input wicket:id="password2" type="password"
+				size="20" /><br /> Role: <select wicket:id="role">
+				<option></option>
+			</select><br />
+			<p>
+				<input type="submit" value="Sing Up" />
+			</p>
+		</form>
+	</div>
 </body>
 </html>

@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
 <body>
 <wicket:panel>
 	<!-- <h4>Edit</h4> -->
+	<div id="editpanel_form">
 	<span style="color: green" wicket:id="succes"> </span>
 	<span style="color: red" wicket:id="feedback"></span>
 	<span wicket:id="listview">
 	<form wicket:id="panelForm">
-		Id: <input wicket:id="id" type="text" size="20" /><br /> Name: <input
-			wicket:id="name" type="text" size="20" /><br /> Surname: <input
-			wicket:id="surname" type="text" size="20" /><br /> Password: <input
-			wicket:id="password" type="password" size="20" /><br /> Confirm Password: <input
-			wicket:id="password2" type="password" size="20" /><br /> Email: <input
-			wicket:id="email" type="text" size="20" /><br /> Role: <select
+		Id: <input wicket:id="id" type="text" size="20" /> Name: <input
+			wicket:id="name" type="text" size="20" /> Surname: <input
+			wicket:id="surname" type="text" size="20" /> Password: <input
+			wicket:id="password" type="password" size="20" /> Confirm Password: <input
+			wicket:id="password2" type="password" size="20" /> Email: <input
+			wicket:id="email" type="text" size="20" /> Role: <select
 			wicket:id="role">
 			<option></option>
 		</select><br /> <input type="submit" value="Save" /> <button wicket:id="cancelbutton" type="button" value="Cancel">Cancel</button> 
 	</form>
 	</span>
-	
+	</div>
 </wicket:panel>
 </body>
 </html>

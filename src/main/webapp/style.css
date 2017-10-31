@@ -69,10 +69,48 @@ h3 {
 #action_form {
     position:absolute;
         width:200px;
-        height:150px;
+        height:160px;
         left:50%;
         top:50%;
         margin-left:-100px;
         margin-top:-100px;
-        border:1px solid
+        border:1px solid;
+}
+#registered_form {
+    position:absolute;
+        width:200px;
+        height:300px;
+        left:50%;
+        top:50%;
+        margin-left:-100px;
+        margin-top:-100px;
+        border:1px solid;
+}
+#editpanel_form {
+    padding: 10px;
+  	margin: 0;
+}
+table.users {
+	border-width: 0px;
+	border-color: gray;
+	border-collapse: collapse;
+	position:relative;
+	left:30%;
+	border-spacing: 10px;
+
+}
+
+table.users th, table.users td {
+	border-width: 1px;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+}
+
+table.users th {
+	font-weight: bold;
+}
+
+a {
+	color: red;
 }

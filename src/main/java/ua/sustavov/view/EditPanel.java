@@ -47,7 +47,7 @@ public class EditPanel extends Panel {
 		}
 
 		@Override
-		protected void onSubmit() {
+		public void onSubmit() {
 			User editUser = getModelObject();
 			getPage().modelChanged();
 		}
@@ -133,10 +133,10 @@ public class EditPanel extends Panel {
 
 			@Override
 			public void onClick() {
-
+				deleteForm(model.getObject());
 			}
 		};
-		
+
 		panelForm.add(uidTextField);
 		panelForm.add(nameTextField);
 		panelForm.add(surnameTextField);
@@ -154,7 +154,5 @@ public class EditPanel extends Panel {
 		listForms.remove(userForm);
 		userFormMap.remove(user);
 	}
-
-	
 
 }
