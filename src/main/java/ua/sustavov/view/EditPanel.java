@@ -48,9 +48,7 @@ public class EditPanel extends Panel {
 
 		@Override
 		protected void onSubmit() {
-			System.out.println("On submit save");
 			User editUser = getModelObject();
-			System.out.println(editUser + " password " + editUser.getPassword());
 			getPage().modelChanged();
 		}
 

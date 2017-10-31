@@ -11,7 +11,6 @@ public class NamePolicyValidator implements IValidator<String> {
 	@Override
 	public void validate(IValidatable<String> validatable) {
 		final String name = validatable.getValue();
-//		System.out.println("name " + name.length());
 		if (name == null || name.length() == 0) {
 			error(validatable, "nameEmpty");
 		}

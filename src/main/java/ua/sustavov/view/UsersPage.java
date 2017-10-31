@@ -52,7 +52,6 @@ public class UsersPage extends WebPage {
 	}
 
 	public boolean getAccess(IModel<User> rowModel) {
-		System.out.println("getAccess");
 		if (loggedUser.isAdmin() || loggedUser.getId().equals(rowModel.getObject().getId())) {
 			return true;
 		}
@@ -99,7 +98,6 @@ public class UsersPage extends WebPage {
 					public void onClick() {
 
 						if (getAccess(rowModel)) {
-							System.out.println("We here on save");
 							setCurrentModel(rowModel);
 							editPanel.add(new Model<User>(rowModel.getObject()));
 						} else {
