@@ -17,11 +17,6 @@
 	<context:component-scan base-package="ua.sustavov.view" />
 	<context:component-scan base-package="ua.sustavov.login" />
 
-	<!-- <context:property-placeholder location="classpath:db/postgres.properties" 
-		system-properties-mode="OVERRIDE" /> <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
-		p:driverClassName="${database.driverClassName}" p:url="${database.url}" p:username="${database.username}" 
-		p:password="${database.password}" /> -->
-
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		p:driverClassName="org.postgresql.Driver" p:url="jdbc:postgresql://localhost:5432/wickusers"
